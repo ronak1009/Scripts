@@ -39,6 +39,7 @@ class BusinessList:
 def start_scrapping(listings, page):
 	# scrapping
 	business_list = BusinessList()
+	added_list = []
 	for listing in listings:
 		try:
 				listing.click()
@@ -58,7 +59,6 @@ def start_scrapping(listings, page):
 				}
 
 				# name
-				s = '{:<20} {:<10} {:<10} {:<10}'
 				if len(listing.get_attribute('aria-label')) >= 1:
 						business.name = listing.get_attribute('aria-label')
 						print('name: ', business.name)
@@ -79,10 +79,10 @@ def start_scrapping(listings, page):
 						elif label == 'phone':
 								business.phone = v
 
-						print(f'label:{label} = {v}')
-				s.format(business.name, business.address, business.website, business.phone)
-				print(s)
-				business_list.business_list.append(business)
+						# print(f'label:{label} = {v}')
+				if not business.name in added_list:
+					business_list.business_list.append(business)
+					added_list.append(business.name)
 		except Exception as e:
 				print(f'Error occured... {e}')
 
